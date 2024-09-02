@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -92,5 +93,23 @@ public class BoardController {
         //수정된 해당 페이지로 리다이렉트
         return "redirect:/boards/"+boardEntity.getId();
     }
+
+    //삭제하기
+    @GetMapping("/boards/{id}/delete")
+    public String delete(@PathVariable Long id, RedirectAttributes rttr){
+        log.info("삭제 요청이 들어왔습니다");
+        //삭제할 대상 가져오기
+        Board deleteBoard = boardRepository.findById(id).orElse(null);
+        log.info(deleteBoard.toString());
+
+        //대상 엔티티 삭제
+        if (deleteBoard != null){
+            boardRepository.delete(deleteBoard);
+            rttr.addFlashAttribute("msg", "삭제되었습니다!");
+        }
+        //결과 페이지로 리다이렉트
+        return "redirect:/boards";
+    }
+
 
 }
