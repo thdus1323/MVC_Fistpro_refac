@@ -6,7 +6,9 @@ import org.example.firstproject_refac.entity.Board;
 import org.example.firstproject_refac.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Slf4j
@@ -34,5 +36,16 @@ public class BoardController {
         return "";
     }
 
+    //글 조회_낱개로 상세보기
+    @GetMapping("/boards/{id}")
+    public String detail(@PathVariable Long id, Model model){
+        log.info("id = " + id);
+        //db에 id 조회해서 해당 글 가져와
+        Board boardEntity = boardRepository.findById(id).orElse(null);
+        //가져온 데이터 모델에 등록
+        model.addAttribute("boardEntity", boardEntity);
+        //모델 통해 뷰 페이지 반환
+        return "boards/detail";
+    }
 
 }
