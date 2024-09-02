@@ -35,7 +35,7 @@ public class BoardController {
         //,리파지로 엔티티를 db에 저장
         Board savedBoard = boardRepository.save(board);
         log.info(savedBoard.toString());
-        return "";
+        return "redirect:/boards/" + savedBoard.getId();
     }
 
     //글 조회_낱개로 상세보기
@@ -59,6 +59,38 @@ public class BoardController {
         model.addAttribute("boardEntityList", boardEntityList);
         //모델을 통해 뷰 페이지 반환
         return "boards/index";
+    }
+
+    //수정하기 폼
+    @GetMapping("boards/{id}/updateForm")
+    public String updateForm(@PathVariable Long id, Model model){
+        //수정할 데이터 가져오기
+        Board boardEntity = boardRepository.findById(id).orElse(null);
+
+        // 모델에 넣기
+        model.addAttribute("boardEntity", boardEntity);
+
+        //뷰 페이지 반환
+        return "boards/update";
+    }
+
+    //수정하기
+    @PostMapping("/boards/edit")
+    public String edit(WriteDTO writeDTO){
+        log.info(writeDTO.toString());
+        //dto를 엔티티로 변환
+        Board boardEntity = writeDTO.toEntity();
+        log.info(boardEntity.toString());
+
+        //엔티티를 db에 저장
+            //db에서 기존 데이터 가져오기
+                Board entityB = boardRepository.findById(boardEntity.getId()).orElse(null);
+            //기존 데이터 값 갱신
+                if (entityB != null){
+                    boardRepository.save(boardEntity);
+                }
+        //수정된 해당 페이지로 리다이렉트
+        return "redirect:/boards/"+boardEntity.getId();
     }
 
 }

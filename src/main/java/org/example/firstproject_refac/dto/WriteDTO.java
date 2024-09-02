@@ -7,11 +7,12 @@ import org.example.firstproject_refac.entity.Board;
 @AllArgsConstructor
 @ToString
 public class WriteDTO {
+    private Long id;
     private String title;
     private String content;
 
 
     public Board toEntity() {
-        return new Board(null, title, content);
+        return new Board(id, title, content);
     }
 }
