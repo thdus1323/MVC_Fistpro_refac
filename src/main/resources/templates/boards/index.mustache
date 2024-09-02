@@ -12,11 +12,11 @@
     {{#boardEntityList}}
         <tr>
             <th >{{id}}</th>
-            <td >{{title}}</td>
+            <td ><a href="boards/{{id}}"> {{title}}</a></td>
             <td>{{content}}</td>
         </tr>
     {{/boardEntityList}}
     </tbody>
 </table>
-
+<a href="/boards/writeForm">글쓰기</a>
 {{>layout/footer}}
