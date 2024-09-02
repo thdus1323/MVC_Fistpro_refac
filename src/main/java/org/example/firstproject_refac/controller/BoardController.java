@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Slf4j
 @Controller
 public class BoardController {
@@ -18,7 +20,7 @@ public class BoardController {
     private BoardRepository boardRepository;
 
     //글쓰기폼
-    @GetMapping("/boards")
+    @GetMapping("/boards/writeForm")
     public String writeBoardForm(){
         return "/boards/write";
     }
@@ -46,6 +48,17 @@ public class BoardController {
         model.addAttribute("boardEntity", boardEntity);
         //모델 통해 뷰 페이지 반환
         return "boards/detail";
+    }
+
+    //글 조회_목록보기
+    @GetMapping("/boards")
+    public String index(Model model){
+        //db에서 모든 boards 가져오기
+        List<Board> boardEntityList =boardRepository.findAll();
+        //가져온 boards 묶음을 모델에 등록
+        model.addAttribute("boardEntityList", boardEntityList);
+        //모델을 통해 뷰 페이지 반환
+        return "boards/index";
     }
 
 }
